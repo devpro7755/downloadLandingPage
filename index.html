@@ -19,28 +19,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-  <!-- ─── CDN: AOS (Animate On Scroll) ─── -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
-
-  <!-- Fallback: if AOS CSS loads but JS never runs, unhide everything after 2s -->
-  <style>
-    [data-aos] { opacity: 1 !important; transform: none !important; }
-  </style>
-  <!-- This gets overridden by AOS CSS (which hides elements) only when AOS CSS loads.
-       The inline script below re-hides them only once AOS is confirmed ready. -->
-  <script>
-    // Re-apply AOS hiding only after AOS CSS is confirmed loaded
-    // If AOS JS never fires, the fallback above keeps content visible
-    document.addEventListener('DOMContentLoaded', function() {
-      var fallback = setTimeout(function() {
-        // AOS JS never ran — force all elements visible
-        document.querySelectorAll('[data-aos]').forEach(function(el) {
-          el.removeAttribute('data-aos');
-        });
-      }, 2500);
-      window.__aosFallback = fallback;
-    });
-  </script>
 
   <style>
     /* ─────────────────────────────────────────
@@ -689,6 +667,30 @@
     @media (min-width: 1200px) {
       .hero-h1 { font-size:72px; }
     }
+
+    /* ─────────────────────────────────────────
+       SCROLL REVEAL (no AOS — IntersectionObserver in app.js)
+    ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .reveal.in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-d1 { transition-delay: .08s; }
+    .reveal-d2 { transition-delay: .16s; }
+    .reveal-d3 { transition-delay: .24s; }
+    .reveal-d4 { transition-delay: .32s; }
+
+    /* Hero animates via CSS keyframe — never waits for scroll */
+    .hero-animate {
+      animation: fade-up .7s ease both;
+    }
+    .hero-animate-d1 { animation-delay: .1s; }
+    .hero-animate-d2 { animation-delay: .25s; }
   </style>
 </head>
 <body>
@@ -758,7 +760,7 @@
   </div>
 
   <!-- Copy -->
-  <div class="hero-content" style="animation: fade-up .7s ease .1s both;">
+  <div class="hero-content hero-animate hero-animate-d1">
     <div class="hero-badge">
       <span class="live-dot" aria-hidden="true"></span>
       Now on iOS &amp; Android
@@ -806,7 +808,7 @@
     </div>
 
     <!-- Stats -->
-    <div class="stats" style="animation: fade-up .7s ease .3s both;">
+    <div class="stats hero-animate hero-animate-d2">
       <div class="stat"><span class="stat-val g-text">Free</span><span class="stat-lbl">Always</span></div>
       <div class="stat"><span class="stat-val g-text">100+</span><span class="stat-lbl">Downloads</span></div>
       <div class="stat"><span class="stat-val g-text">iOS&nbsp;&amp;&nbsp;Android</span><span class="stat-lbl">Platforms</span></div>
@@ -821,7 +823,7 @@
      FEATURES
 ══════════════════════════════ -->
 <section class="section z1">
-  <div data-aos="fade-up">
+  <div class="reveal">
     <div class="eyebrow"><span class="eyebrow-bar"></span>Features</div>
     <h2 class="section-h2">Built for real<br/><span class="g-text">human connection.</span></h2>
     <p class="section-sub">Not just followers and likes — real groups, real events, real friendships.</p>
@@ -829,7 +831,7 @@
 
   <div class="features">
 
-    <div class="feat wide" data-aos="fade-up" data-aos-delay="60">
+    <div class="feat wide" class="reveal reveal-d1">
       <div>
         <div class="feat-icon">🏘️</div>
         <h3 class="feat-title">Create Your Own Community</h3>
@@ -845,25 +847,25 @@
       </div>
     </div>
 
-    <div class="feat" data-aos="fade-up" data-aos-delay="80">
+    <div class="feat" class="reveal reveal-d2">
       <div class="feat-icon">🛡️</div>
       <h3 class="feat-title">Stay Safe &amp; In Control</h3>
       <p class="feat-desc">Report content, block users, and manage your settings. Whistler is a safe space where every member feels respected.</p>
     </div>
 
-    <div class="feat" data-aos="fade-up" data-aos-delay="100">
+    <div class="feat" class="reveal reveal-d3">
       <div class="feat-icon">🌱</div>
       <h3 class="feat-title">Learn &amp; Grow Together</h3>
       <p class="feat-desc">Attend or organise events with experts, facilitators, and your community — virtual or in person.</p>
     </div>
 
-    <div class="feat" data-aos="fade-up" data-aos-delay="120">
+    <div class="feat" class="reveal reveal-d1">
       <div class="feat-icon">💬</div>
       <h3 class="feat-title">Post, Share &amp; Connect</h3>
       <p class="feat-desc">Join conversations, share ideas, and interact with like-minded members. React, comment, and build real friendships.</p>
     </div>
 
-    <div class="feat" data-aos="fade-up" data-aos-delay="140">
+    <div class="feat" class="reveal reveal-d2">
       <div class="feat-icon">✨</div>
       <h3 class="feat-title">Moments</h3>
       <p class="feat-desc">Share short-form photos and videos with your community. Bookmark favourites and revisit them anytime.</p>
@@ -878,14 +880,14 @@
      HOW IT WORKS
 ══════════════════════════════ -->
 <section class="section z1">
-  <div style="text-align:center;max-width:480px;margin-inline:auto;" data-aos="fade-up">
+  <div style="text-align:center;max-width:480px;margin-inline:auto;" class="reveal">
     <div class="eyebrow" style="justify-content:center;"><span class="eyebrow-bar"></span>How It Works<span class="eyebrow-bar"></span></div>
     <h2 class="section-h2">Up and running<br/>in <span class="g-text">3 steps.</span></h2>
     <p class="section-sub">Get started in under a minute — completely free.</p>
   </div>
 
   <div class="steps">
-    <div class="step" data-aos="fade-up" data-aos-delay="60">
+    <div class="step" class="reveal reveal-d1">
       <div class="step-num">1</div>
       <div class="step-body">
         <div class="step-title">Download the App</div>
@@ -894,7 +896,7 @@
     </div>
     <div class="step-arrow-icon" style="display:none;font-size:22px;color:var(--text-3);align-self:flex-start;padding-top:8px;flex-shrink:0;" aria-hidden="true">→</div>
 
-    <div class="step" data-aos="fade-up" data-aos-delay="120">
+    <div class="step" class="reveal reveal-d1">
       <div class="step-num">2</div>
       <div class="step-body">
         <div class="step-title">Build Your Profile</div>
@@ -903,7 +905,7 @@
     </div>
     <div class="step-arrow-icon" style="display:none;font-size:22px;color:var(--text-3);align-self:flex-start;padding-top:8px;flex-shrink:0;" aria-hidden="true">→</div>
 
-    <div class="step" data-aos="fade-up" data-aos-delay="180">
+    <div class="step" class="reveal reveal-d3">
       <div class="step-num">3</div>
       <div class="step-body">
         <div class="step-title">Join &amp; Belong</div>
@@ -919,7 +921,7 @@
      CTA
 ══════════════════════════════ -->
 <section class="section z1">
-  <div class="cta-box" data-aos="fade-up">
+  <div class="cta-box" class="reveal">
     <span class="cta-emoji" aria-hidden="true">🎿</span>
     <h2 class="cta-h2">Ready to find<br/><span class="g-text">your people?</span></h2>
     <p class="cta-sub">People thrive when they belong. Join Whistler today — it's completely free.</p>
@@ -988,58 +990,7 @@
   <a href="#" class="ob-btn" id="ob-link">Open App</a>
 </div>
 
-<!-- ─── CDN: AOS JS ─── -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" onerror="clearTimeout(window.__aosFallback);document.querySelectorAll('[data-aos]').forEach(function(el){el.removeAttribute('data-aos');});"></script>
-
-<script>
-(function () {
-  /* ── Platform detection ── */
-  var ua       = navigator.userAgent || '';
-  var isIOS    = /iPhone|iPad|iPod/i.test(ua);
-  var isAndroid= /Android/i.test(ua);
-  var isMobile = isIOS || isAndroid;
-
-  if (isIOS)     document.body.classList.add('ios');
-  if (isAndroid) document.body.classList.add('android');
-
-  /* ── Desktop: show both store buttons ── */
-  if (!isMobile) {
-    ['d-ios','d-android','cta-d-ios','cta-d-android'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.style.display = 'flex';
-    });
-  }
-
-  /* ── Sticky open-in-app bar ── */
-  var path = window.location.pathname;
-  if (isMobile && path && path !== '/') {
-    var bar  = document.getElementById('open-bar');
-    var link = document.getElementById('ob-link');
-    if (bar && link) {
-      link.href = 'whistler://' + path.replace(/^\//, '');
-      bar.classList.add('show');
-    }
-  }
-
-  /* ── Desktop: show step arrows ── */
-  if (window.matchMedia('(min-width: 960px)').matches) {
-    document.querySelectorAll('.step-arrow-icon').forEach(function(el) {
-      el.style.display = 'flex';
-    });
-  }
-
-  /* ── Init AOS ── */
-  if (typeof AOS !== 'undefined') {
-    clearTimeout(window.__aosFallback);
-    AOS.init({
-      once: true,
-      duration: 650,
-      easing: 'ease-out-cubic',
-      offset: 60
-    });
-  }
-})();
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
