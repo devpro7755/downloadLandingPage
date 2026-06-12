@@ -22,6 +22,26 @@
   <!-- ─── CDN: AOS (Animate On Scroll) ─── -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" />
 
+  <!-- Fallback: if AOS CSS loads but JS never runs, unhide everything after 2s -->
+  <style>
+    [data-aos] { opacity: 1 !important; transform: none !important; }
+  </style>
+  <!-- This gets overridden by AOS CSS (which hides elements) only when AOS CSS loads.
+       The inline script below re-hides them only once AOS is confirmed ready. -->
+  <script>
+    // Re-apply AOS hiding only after AOS CSS is confirmed loaded
+    // If AOS JS never fires, the fallback above keeps content visible
+    document.addEventListener('DOMContentLoaded', function() {
+      var fallback = setTimeout(function() {
+        // AOS JS never ran — force all elements visible
+        document.querySelectorAll('[data-aos]').forEach(function(el) {
+          el.removeAttribute('data-aos');
+        });
+      }, 2500);
+      window.__aosFallback = fallback;
+    });
+  </script>
+
   <style>
     /* ─────────────────────────────────────────
        TOKENS
@@ -121,6 +141,11 @@
     /* ─── Nav entrance ─── */
     @keyframes nav-in {
       from { opacity:0; transform:translateY(-100%); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes fade-up {
+      from { opacity:0; transform:translateY(24px); }
       to   { opacity:1; transform:translateY(0); }
     }
 
@@ -733,8 +758,7 @@
   </div>
 
   <!-- Copy -->
-  <div class="hero-content"
-       data-aos="fade-up" data-aos-duration="700" data-aos-delay="100">
+  <div class="hero-content" style="animation: fade-up .7s ease .1s both;">
     <div class="hero-badge">
       <span class="live-dot" aria-hidden="true"></span>
       Now on iOS &amp; Android
@@ -782,7 +806,7 @@
     </div>
 
     <!-- Stats -->
-    <div class="stats" data-aos="fade-up" data-aos-delay="200">
+    <div class="stats" style="animation: fade-up .7s ease .3s both;">
       <div class="stat"><span class="stat-val g-text">Free</span><span class="stat-lbl">Always</span></div>
       <div class="stat"><span class="stat-val g-text">100+</span><span class="stat-lbl">Downloads</span></div>
       <div class="stat"><span class="stat-val g-text">iOS&nbsp;&amp;&nbsp;Android</span><span class="stat-lbl">Platforms</span></div>
@@ -965,7 +989,7 @@
 </div>
 
 <!-- ─── CDN: AOS JS ─── -->
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js" onerror="clearTimeout(window.__aosFallback);document.querySelectorAll('[data-aos]').forEach(function(el){el.removeAttribute('data-aos');});"></script>
 
 <script>
 (function () {
@@ -1005,12 +1029,15 @@
   }
 
   /* ── Init AOS ── */
-  AOS.init({
-    once: true,
-    duration: 650,
-    easing: 'ease-out-cubic',
-    offset: 60
-  });
+  if (typeof AOS !== 'undefined') {
+    clearTimeout(window.__aosFallback);
+    AOS.init({
+      once: true,
+      duration: 650,
+      easing: 'ease-out-cubic',
+      offset: 60
+    });
+  }
 })();
 </script>
 
