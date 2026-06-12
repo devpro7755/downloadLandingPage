@@ -27,7 +27,10 @@
     }
   }
 
-  /* ── Scroll reveal via IntersectionObserver ── */
+  /* ── Scroll reveal ── */
+  // Mark body so CSS hides .reveal elements — only when JS is running
+  document.body.classList.add('js-ready');
+
   var reveals = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
     var io = new IntersectionObserver(function(entries) {

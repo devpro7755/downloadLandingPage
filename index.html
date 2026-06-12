@@ -14,13 +14,44 @@
   <meta property="og:description" content="Start new groups or join existing ones where people share your passions." />
   <meta property="og:type" content="website" />
 
-  <!-- ─── CDN: Google Fonts ─── -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- ─── Self-hosted Inter (app font, no CDN) ─── -->
 
 
   <style>
+    /* ─────────────────────────────────────────
+       SELF-HOSTED INTER (app font)
+    ───────────────────────────────────────── */
+    @font-face {
+      font-family: 'Inter';
+      src: url('fonts/Inter-Medium.ttf') format('truetype');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('fonts/Inter-SemiBold.ttf') format('truetype');
+      font-weight: 600;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('fonts/Inter-Bold.ttf') format('truetype');
+      font-weight: 700;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('fonts/Inter-ExtraBold.ttf') format('truetype');
+      font-weight: 800;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Inter';
+      src: url('fonts/Inter-Black.ttf') format('truetype');
+      font-weight: 900;
+      font-display: swap;
+    }
+
     /* ─────────────────────────────────────────
        TOKENS
     ───────────────────────────────────────── */
@@ -669,21 +700,29 @@
     }
 
     /* ─────────────────────────────────────────
-       SCROLL REVEAL (no AOS — IntersectionObserver in app.js)
+       SCROLL REVEAL
+       Content is always visible (opacity:1).
+       JS adds .js-ready to <body> which opts in
+       to the hidden→animate pattern.
+       If JS/CSP blocks script → everything shows.
     ───────────────────────────────────────── */
     .reveal {
+      opacity: 1;
+      transform: none;
+    }
+    .js-ready .reveal {
       opacity: 0;
       transform: translateY(28px);
       transition: opacity .65s ease, transform .65s ease;
     }
-    .reveal.in {
+    .js-ready .reveal.in {
       opacity: 1;
       transform: translateY(0);
     }
-    .reveal-d1 { transition-delay: .08s; }
-    .reveal-d2 { transition-delay: .16s; }
-    .reveal-d3 { transition-delay: .24s; }
-    .reveal-d4 { transition-delay: .32s; }
+    .js-ready .reveal-d1 { transition-delay: .08s; }
+    .js-ready .reveal-d2 { transition-delay: .16s; }
+    .js-ready .reveal-d3 { transition-delay: .24s; }
+    .js-ready .reveal-d4 { transition-delay: .32s; }
 
     /* Hero animates via CSS keyframe — never waits for scroll */
     .hero-animate {
@@ -991,7 +1030,7 @@
 </div>
 
 <script>
-(function(){var ua=navigator.userAgent||'';var isIOS=/iPhone|iPad|iPod/i.test(ua);var isAndroid=/Android/i.test(ua);var isMobile=isIOS||isAndroid;if(isIOS)document.body.classList.add('ios');if(isAndroid)document.body.classList.add('android');if(!isMobile){['d-ios','d-android','cta-d-ios','cta-d-android'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='flex';});}var path=window.location.pathname;if(isMobile&&path&&path!=='/'){var bar=document.getElementById('open-bar');var link=document.getElementById('ob-link');if(bar&&link){link.href='whistler://'+path.replace(/^\//,'');bar.classList.add('show');}}var reveals=document.querySelectorAll('.reveal');if('IntersectionObserver'in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(function(el){io.observe(el);});}else{reveals.forEach(function(el){el.classList.add('in');});}if(window.matchMedia('(min-width:960px)').matches){document.querySelectorAll('.step-arrow-icon').forEach(function(el){el.style.display='flex';});}})();
+(function(){var ua=navigator.userAgent||'';var isIOS=/iPhone|iPad|iPod/i.test(ua);var isAndroid=/Android/i.test(ua);var isMobile=isIOS||isAndroid;if(isIOS)document.body.classList.add('ios');if(isAndroid)document.body.classList.add('android');if(!isMobile){['d-ios','d-android','cta-d-ios','cta-d-android'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='flex';});}var path=window.location.pathname;if(isMobile&&path&&path!=='/'){var bar=document.getElementById('open-bar');var link=document.getElementById('ob-link');if(bar&&link){link.href='whistler://'+path.replace(/^\//,'');bar.classList.add('show');}}document.body.classList.add('js-ready');var reveals=document.querySelectorAll('.reveal');if('IntersectionObserver'in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(function(el){io.observe(el);});}else{reveals.forEach(function(el){el.classList.add('in');});}if(window.matchMedia('(min-width:960px)').matches){document.querySelectorAll('.step-arrow-icon').forEach(function(el){el.style.display='flex';});}})();
 </script>
 
 </body>
