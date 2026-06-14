@@ -198,11 +198,14 @@
     .nav-icon {
       width: 34px; height: 34px;
       border-radius: 10px;
-      background: var(--grad);
       display: grid;
       place-items: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 14px rgba(232,23,74,.4);
+      overflow: hidden;
+    }
+    .nav-icon img {
+      width: 100%; height: 100%;
+      object-fit: contain;
     }
     .nav-name { font-size: 17px; font-weight: 800; letter-spacing: -.3px; }
 
@@ -344,11 +347,11 @@
     .phone-shell {
       width: min(230px, 62vw);
       aspect-ratio: 9/19;
-      border-radius: 32px;
-      background: linear-gradient(160deg, #3A0810 0%, #140307 100%);
-      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 40px;
+      background: #ffffff;
+      border: 8px solid #1a1a1a;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,.06),
+        0 0 0 1px #333,
         0 32px 64px rgba(0,0,0,.7),
         0 0 40px rgba(122,14,38,.35);
       overflow: hidden;
@@ -358,9 +361,9 @@
       position: absolute;
       top:0; left:50%;
       transform:translateX(-50%);
-      width:60px; height:22px;
-      background:#000;
-      border-radius:0 0 14px 14px;
+      width:70px; height:26px;
+      background:#1a1a1a;
+      border-radius:0 0 18px 18px;
       z-index:2;
     }
     .phone-inner {
@@ -368,32 +371,34 @@
       display:flex;
       flex-direction:column;
       align-items:center;
-      padding:34px 14px 16px;
+      padding:36px 14px 16px;
       gap:9px;
+      background:#fff;
+      overflow:hidden;
     }
     .p-logo {
-      width:46px; height:46px;
-      border-radius:13px;
-      background:var(--grad);
+      width:52px; height:52px;
+      border-radius:14px;
       display:grid; place-items:center;
-      box-shadow: 0 6px 18px rgba(232,23,74,.4);
       flex-shrink:0;
+      overflow:hidden;
     }
-    .p-name { font-size:15px; font-weight:800; letter-spacing:-.2px; }
-    .p-tag  { font-size:10px; color:var(--text-3); }
-    .p-cards { width:100%; display:flex; flex-direction:column; gap:5px; margin-top:4px; }
+    .p-logo img { width:100%; height:100%; object-fit:contain; }
+    .p-name { font-size:15px; font-weight:800; letter-spacing:-.2px; color:#111; }
+    .p-tag  { font-size:10px; color:#999; }
+    .p-cards { width:100%; display:flex; flex-direction:column; gap:6px; margin-top:4px; }
     .p-card {
-      background:rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:9px;
-      padding:7px 9px;
+      background:#f8f8f8;
+      border:1px solid #eee;
+      border-radius:10px;
+      padding:8px 10px;
       display:flex;
       align-items:center;
-      gap:7px;
+      gap:8px;
     }
-    .p-dot { width:26px; height:26px; border-radius:7px; flex-shrink:0; }
-    .p-ct  { font-size:10px; font-weight:700; }
-    .p-cs  { font-size:9px; color:var(--text-3); margin-top:1px; }
+    .p-dot { width:28px; height:28px; border-radius:8px; flex-shrink:0; }
+    .p-ct  { font-size:10px; font-weight:700; color:#111; }
+    .p-cs  { font-size:9px; color:#999; margin-top:1px; }
 
     /* floating badges */
     .badge {
@@ -576,10 +581,11 @@
     .ob-icon {
       width:42px; height:42px;
       border-radius:11px;
-      background:var(--grad);
+      background:#fff;
       display:grid; place-items:center;
       flex-shrink:0;
-      box-shadow:0 4px 14px rgba(232,23,74,.35);
+      box-shadow:0 4px 14px rgba(0,0,0,.2);
+      overflow:hidden;
     }
     .ob-title { font-size:14px; font-weight:800; }
     .ob-sub   { font-size:12px; color:var(--text-2); }
@@ -743,9 +749,7 @@
 <nav class="nav z1">
   <a href="#top" class="nav-brand" aria-label="Whistler home">
     <div class="nav-icon" aria-hidden="true">
-      <svg width="20" height="16" viewBox="0 0 22 18" fill="none">
-        <path d="M1 1L8 15L11 9L14 15L21 1" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img src="Whistlerlogo.png" alt="Whistler logo" />
     </div>
     <span class="nav-name">Whistler</span>
   </a>
@@ -763,9 +767,7 @@
       <div class="phone-notch"></div>
       <div class="phone-inner">
         <div class="p-logo">
-          <svg width="26" height="20" viewBox="0 0 22 18" fill="none">
-            <path d="M1 1L8 15L11 9L14 15L21 1" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
+          <img src="Whistlerlogo.png" alt="Whistler" />
         </div>
         <div class="p-name">Whistler</div>
         <div class="p-tag">Find your community</div>
@@ -1017,9 +1019,7 @@
 <div class="open-bar z1" id="open-bar" role="complementary" aria-label="Open in Whistler app">
   <div class="ob-info">
     <div class="ob-icon" aria-hidden="true">
-      <svg width="20" height="16" viewBox="0 0 22 18" fill="none">
-        <path d="M1 1L8 15L11 9L14 15L21 1" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+      <img src="Whistlerlogo.png" alt="Whistler" style="width:28px;height:28px;object-fit:contain;" />
     </div>
     <div>
       <div class="ob-title">Open in Whistler</div>
