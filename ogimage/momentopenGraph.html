@@ -24,22 +24,89 @@
   <meta name="twitter:title"       content="${post}" />
   <meta name="twitter:description" content="${description}" />
   <meta name="twitter:image"       content="${ogImage}" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0D0305;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    .card {
+      display: block;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 18px;
+      overflow: hidden;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.55);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .card:hover  { transform: translateY(-3px); box-shadow: 0 16px 56px rgba(0,0,0,0.7); }
+    .card:active { transform: translateY(0);    box-shadow: 0 4px 24px rgba(0,0,0,0.5); }
+    .card img { width: 100%; display: block; }
+    .btn {
+      margin-top: 20px;
+      display: inline-block;
+      padding: 14px 36px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #E8174A 0%, #F5603A 55%, #F7A325 100%);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: opacity 0.15s ease;
+    }
+    .btn:hover { opacity: 0.88; }
+  </style>
 </head>
 <body>
+
+  <a class="card" id="card-link" href="whistler://MomentDetails/${momentId}">
+    <img src="${ogImage}" alt="${post}" />
+  </a>
+
+  <a class="btn" id="btn-link" href="whistler://MomentDetails/${momentId}">
+    Open in Whistler
+  </a>
+
   <script>
-    // Try to open the moment in the Whistler app; fall back to the app store
-    var ua = navigator.userAgent;
-    if (/iPhone|iPad|iPod/i.test(ua)) {
-      window.location.href = 'whistler://MomentDetails/${momentId}';
-      setTimeout(function() {
-        window.location.href = 'https://apps.apple.com/us/app/whistler-community-app/id6749228604';
-      }, 1500);
-    } else if (/Android/i.test(ua)) {
-      window.location.href = 'whistler://MomentDetails/${momentId}';
-      setTimeout(function() {
-        window.location.href = 'https://play.google.com/store/apps/details?id=com.whistlerApp.app';
-      }, 1500);
+    var ua        = navigator.userAgent;
+    var isIOS     = /iPhone|iPad|iPod/i.test(ua);
+    var isAndroid = /Android/i.test(ua);
+    var deepLink  = 'whistler://MomentDetails/${momentId}';
+    var iosStore  = 'https://apps.apple.com/us/app/whistler-community-app/id6749228604';
+    var playStore = 'https://play.google.com/store/apps/details?id=com.whistlerApp.app';
+
+    function openApp() {
+      window.location.href = deepLink;
+      if (isIOS) {
+        setTimeout(function () { window.location.href = iosStore; }, 1500);
+      } else if (isAndroid) {
+        setTimeout(function () { window.location.href = playStore; }, 1500);
+      }
     }
+
+    document.getElementById('card-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      openApp();
+    });
+    document.getElementById('btn-link').addEventListener('click', function (e) {
+      e.preventDefault();
+      openApp();
+    });
+
+    // Auto-open on mobile page load
+    if (isIOS || isAndroid) { openApp(); }
   </script>
+
 </body>
 </html>
