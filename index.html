@@ -400,6 +400,59 @@
     .p-ct  { font-size:10px; font-weight:700; color:#111; }
     .p-cs  { font-size:9px; color:#999; margin-top:1px; }
 
+    /* ── Phone screen entrance animations ── */
+    @keyframes phone-logo-pop {
+      0%   { opacity:0; transform:scale(.5) translateY(6px); }
+      60%  { transform:scale(1.12) translateY(-2px); }
+      100% { opacity:1; transform:scale(1) translateY(0); }
+    }
+    @keyframes phone-text-in {
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes phone-card-in {
+      from { opacity:0; transform:translateX(-18px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    @keyframes card-breathe {
+      0%,100% { transform:translateY(0) scale(1); box-shadow:none; }
+      50%      { transform:translateY(-2px) scale(1.01); box-shadow:0 4px 14px rgba(0,0,0,.07); }
+    }
+    @keyframes dot-pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:.75; transform:scale(.92); }
+    }
+
+    .p-logo {
+      animation: phone-logo-pop .6s cubic-bezier(.34,1.56,.64,1) .3s both;
+    }
+    .p-name {
+      animation: phone-text-in .5s ease .85s both;
+    }
+    .p-tag {
+      animation: phone-text-in .5s ease 1.0s both;
+    }
+    .p-card:nth-child(1) {
+      animation:
+        phone-card-in .5s cubic-bezier(.34,1.4,.64,1) 1.25s both,
+        card-breathe 4s ease-in-out 3s infinite;
+    }
+    .p-card:nth-child(2) {
+      animation:
+        phone-card-in .5s cubic-bezier(.34,1.4,.64,1) 1.5s both,
+        card-breathe 4s ease-in-out 3.5s infinite;
+    }
+    .p-card:nth-child(3) {
+      animation:
+        phone-card-in .5s cubic-bezier(.34,1.4,.64,1) 1.75s both,
+        card-breathe 4s ease-in-out 4s infinite;
+    }
+    .p-dot {
+      animation: dot-pulse 3s ease-in-out infinite;
+    }
+    .p-card:nth-child(2) .p-dot { animation-delay: .4s; }
+    .p-card:nth-child(3) .p-dot { animation-delay: .8s; }
+
     /* floating badges */
     .badge {
       position:absolute;
@@ -624,11 +677,7 @@
       margin-top:8px;
     }
 
-    /* ─────────────────────────────────────────
-       PLATFORM VISIBILITY
-    ───────────────────────────────────────── */
-    body.ios     .android-only { display:none !important; }
-    body.android .ios-only     { display:none !important; }
+    /* Both store buttons always visible on all devices */
 
     /* ─────────────────────────────────────────
        TABLET  ≥ 600 px
@@ -813,34 +862,17 @@
       Whistler is more than just a platform — it's a movement to restore the true essence of community. Find your tribe, share meaningful experiences, and grow together.
     </p>
 
-    <!-- Store buttons -->
+    <!-- Store buttons — always show both -->
     <div class="store-row" id="download">
-      <!-- iOS only -->
       <a href="https://apps.apple.com/us/app/whistler-community-app/id6749228604"
-         class="store-btn s-ios ios-only" aria-label="Download on the App Store">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-        </svg>
-        <div class="store-text"><span class="store-top">Download on the</span><span class="store-main">App Store</span></div>
-      </a>
-      <!-- Android only -->
-      <a href="https://play.google.com/store/apps/details?id=com.whistlerApp.app"
-         class="store-btn s-android android-only" aria-label="Get it on Google Play">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M3.18 23.76c.3.18.67.2 1.01.04L16.81 12 12.54 7.73 3.18 23.76zm15.96-12.36L16.81 12l2.33-2.33L16.81 8l2.35-1.4c.93-.55.93-1.95 0-2.5L5.52.12a1.44 1.44 0 0 0-1.47.03L14.14 9.28l4.27-4.27 3 1.76c.62.36.62 1.27 0 1.63l-3 1.76-4.27 4.27L4.05 23.85c.47.27 1.05.26 1.47-.03l13.62-8.07c.93-.55.93-1.95 0-2.5v.15z"/>
-        </svg>
-        <div class="store-text"><span class="store-top">Get it on</span><span class="store-main">Google Play</span></div>
-      </a>
-      <!-- Desktop: both (injected by JS) -->
-      <a href="https://apps.apple.com/us/app/whistler-community-app/id6749228604"
-         class="store-btn s-ios" id="d-ios" style="display:none" aria-label="Download on the App Store">
+         class="store-btn s-ios" aria-label="Download on the App Store">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
         </svg>
         <div class="store-text"><span class="store-top">Download on the</span><span class="store-main">App Store</span></div>
       </a>
       <a href="https://play.google.com/store/apps/details?id=com.whistlerApp.app"
-         class="store-btn s-android" id="d-android" style="display:none" aria-label="Get it on Google Play">
+         class="store-btn s-android" aria-label="Get it on Google Play">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M3.18 23.76c.3.18.67.2 1.01.04L16.81 12 12.54 7.73 3.18 23.76zm15.96-12.36L16.81 12l2.33-2.33L16.81 8l2.35-1.4c.93-.55.93-1.95 0-2.5L5.52.12a1.44 1.44 0 0 0-1.47.03L14.14 9.28l4.27-4.27 3 1.76c.62.36.62 1.27 0 1.63l-3 1.76-4.27 4.27L4.05 23.85c.47.27 1.05.26 1.47-.03l13.62-8.07c.93-.55.93-1.95 0-2.5v.15z"/>
         </svg>
@@ -968,29 +1000,14 @@
     <p class="cta-sub">People thrive when they belong. Join Whistler today — it's completely free.</p>
     <div class="cta-btns">
       <a href="https://apps.apple.com/us/app/whistler-community-app/id6749228604"
-         class="store-btn s-ios ios-only" aria-label="Download on the App Store">
+         class="store-btn s-ios" aria-label="Download on the App Store">
         <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
         </svg>
         <div class="store-text"><span class="store-top">Download on the</span><span class="store-main">App Store</span></div>
       </a>
       <a href="https://play.google.com/store/apps/details?id=com.whistlerApp.app"
-         class="store-btn s-android android-only" aria-label="Get it on Google Play">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M3.18 23.76c.3.18.67.2 1.01.04L16.81 12 12.54 7.73 3.18 23.76zm15.96-12.36L16.81 12l2.33-2.33L16.81 8l2.35-1.4c.93-.55.93-1.95 0-2.5L5.52.12a1.44 1.44 0 0 0-1.47.03L14.14 9.28l4.27-4.27 3 1.76c.62.36.62 1.27 0 1.63l-3 1.76-4.27 4.27L4.05 23.85c.47.27 1.05.26 1.47-.03l13.62-8.07c.93-.55.93-1.95 0-2.5v.15z"/>
-        </svg>
-        <div class="store-text"><span class="store-top">Get it on</span><span class="store-main">Google Play</span></div>
-      </a>
-      <!-- Desktop both -->
-      <a href="https://apps.apple.com/us/app/whistler-community-app/id6749228604"
-         class="store-btn s-ios" id="cta-d-ios" style="display:none" aria-label="Download on the App Store">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
-        </svg>
-        <div class="store-text"><span class="store-top">Download on the</span><span class="store-main">App Store</span></div>
-      </a>
-      <a href="https://play.google.com/store/apps/details?id=com.whistlerApp.app"
-         class="store-btn s-android" id="cta-d-android" style="display:none" aria-label="Get it on Google Play">
+         class="store-btn s-android" aria-label="Get it on Google Play">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M3.18 23.76c.3.18.67.2 1.01.04L16.81 12 12.54 7.73 3.18 23.76zm15.96-12.36L16.81 12l2.33-2.33L16.81 8l2.35-1.4c.93-.55.93-1.95 0-2.5L5.52.12a1.44 1.44 0 0 0-1.47.03L14.14 9.28l4.27-4.27 3 1.76c.62.36.62 1.27 0 1.63l-3 1.76-4.27 4.27L4.05 23.85c.47.27 1.05.26 1.47-.03l13.62-8.07c.93-.55.93-1.95 0-2.5v.15z"/>
         </svg>
@@ -1030,7 +1047,7 @@
 </div>
 
 <script>
-(function(){var ua=navigator.userAgent||'';var isIOS=/iPhone|iPad|iPod/i.test(ua);var isAndroid=/Android/i.test(ua);var isMobile=isIOS||isAndroid;if(isIOS)document.body.classList.add('ios');if(isAndroid)document.body.classList.add('android');if(!isMobile){['d-ios','d-android','cta-d-ios','cta-d-android'].forEach(function(id){var el=document.getElementById(id);if(el)el.style.display='flex';});}var path=window.location.pathname;if(isMobile&&path&&path!=='/'){var bar=document.getElementById('open-bar');var link=document.getElementById('ob-link');if(bar&&link){link.href='whistler://'+path.replace(/^\//,'');bar.classList.add('show');}}document.body.classList.add('js-ready');var reveals=document.querySelectorAll('.reveal');if('IntersectionObserver'in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(function(el){io.observe(el);});}else{reveals.forEach(function(el){el.classList.add('in');});}if(window.matchMedia('(min-width:960px)').matches){document.querySelectorAll('.step-arrow-icon').forEach(function(el){el.style.display='flex';});}})();
+(function(){var ua=navigator.userAgent||'';var isIOS=/iPhone|iPad|iPod/i.test(ua);var isAndroid=/Android/i.test(ua);var isMobile=isIOS||isAndroid;var path=window.location.pathname;if(isMobile&&path&&path!=='/'){var bar=document.getElementById('open-bar');var link=document.getElementById('ob-link');if(bar&&link){link.href='whistler://'+path.replace(/^\//,'');bar.classList.add('show');}}document.body.classList.add('js-ready');var reveals=document.querySelectorAll('.reveal');if('IntersectionObserver'in window){var io=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});reveals.forEach(function(el){io.observe(el);});}else{reveals.forEach(function(el){el.classList.add('in');});}if(window.matchMedia('(min-width:960px)').matches){document.querySelectorAll('.step-arrow-icon').forEach(function(el){el.style.display='flex';});}})();
 </script>
 
 </body>

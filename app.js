@@ -1,20 +1,9 @@
 (function () {
-  /* ── Platform detection ── */
+  /* ── Platform detection (for open-in-app bar only) ── */
   var ua       = navigator.userAgent || '';
   var isIOS    = /iPhone|iPad|iPod/i.test(ua);
   var isAndroid= /Android/i.test(ua);
   var isMobile = isIOS || isAndroid;
-
-  if (isIOS)     document.body.classList.add('ios');
-  if (isAndroid) document.body.classList.add('android');
-
-  /* ── Desktop: show both store buttons ── */
-  if (!isMobile) {
-    ['d-ios','d-android','cta-d-ios','cta-d-android'].forEach(function(id) {
-      var el = document.getElementById(id);
-      if (el) el.style.display = 'flex';
-    });
-  }
 
   /* ── Sticky open-in-app bar ── */
   var path = window.location.pathname;
