@@ -1,0 +1,19 @@
+ogimage/node_modules/
+ogimage/package-lock.json
+
+# Generated OG images (temp test output)
+*.jpg
+ogimage/*.png
+!web/Whistlerlogo.png
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Env
+.env
+.env.*

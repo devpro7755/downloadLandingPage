@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0D0305" />
+
+  <title>${post} · Whistler</title>
+  <meta name="description" content="${description}" />
+
+  <!-- Open Graph (WhatsApp, iMessage, Telegram, Facebook) -->
+  <meta property="og:type"             content="article" />
+  <meta property="og:site_name"        content="Whistler" />
+  <meta property="og:title"            content="${post}" />
+  <meta property="og:description"      content="${description}" />
+  <meta property="og:image"            content="${ogImage}" />
+  <meta property="og:image:secure_url" content="${ogImage}" />
+  <meta property="og:image:width"      content="1200" />
+  <meta property="og:image:height"     content="980" />
+  <meta property="og:url"              content="${pageUrl}" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="${post}" />
+  <meta name="twitter:description" content="${description}" />
+  <meta name="twitter:image"       content="${ogImage}" />
+</head>
+<body>
+  <script>
+    // Try to open the moment in the Whistler app; fall back to the app store
+    var ua = navigator.userAgent;
+    if (/iPhone|iPad|iPod/i.test(ua)) {
+      window.location.href = 'whistler://MomentDetails/${momentId}';
+      setTimeout(function() {
+        window.location.href = 'https://apps.apple.com/us/app/whistler-community-app/id6749228604';
+      }, 1500);
+    } else if (/Android/i.test(ua)) {
+      window.location.href = 'whistler://MomentDetails/${momentId}';
+      setTimeout(function() {
+        window.location.href = 'https://play.google.com/store/apps/details?id=com.whistlerApp.app';
+      }, 1500);
+    }
+  </script>
+</body>
+</html>
