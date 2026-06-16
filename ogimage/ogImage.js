@@ -16,6 +16,7 @@ const { createCanvas, loadImage, registerFont } = require('canvas');
 const sharp  = require('sharp');
 const path   = require('path');
 const crypto = require('crypto');
+const { spawn } = require('child_process');
 
 // ─── Fonts ───────────────────────────────────────────────────────────────────
 
@@ -80,12 +81,49 @@ class LRUCache {
 
 const cache = new LRUCache(500, 24 * 60 * 60 * 1000);
 
-// ─── Photo fetch + resize (Sharp) ────────────────────────────────────────────
+// ─── Media fetch helpers ─────────────────────────────────────────────────────
+
+const VIDEO_EXTS = new Set(['.mp4', '.mov', '.m4v', '.avi', '.webm', '.mkv', '.3gp', '.ts']);
+
+function isVideoUrl(url) {
+  // Strip query string before checking extension (handles S3 presigned URLs)
+  const ext = path.extname(url.split('?')[0]).toLowerCase();
+  return VIDEO_EXTS.has(ext);
+}
+
+// Extract a single frame from a remote video URL using ffmpeg.
+// ffmpeg streams only the bytes it needs from the HTTP source — for a typical
+// MP4 with fast-start encoding it reads just the moov header + first keyframe
+// (usually under 500 KB), regardless of how large the video file is.
+async function extractVideoFrame(url, timeoutMs = 8000) {
+  return new Promise((resolve) => {
+    const chunks = [];
+    const ff = spawn('ffmpeg', [
+      '-i',         url,
+      '-frames:v',  '1',
+      '-vf',        `scale=${IMG_W}:${IMG_H}:force_original_aspect_ratio=increase,crop=${IMG_W}:${IMG_H}`,
+      '-f',         'image2',
+      '-vcodec',    'png',
+      'pipe:1',
+    ], { stdio: ['ignore', 'pipe', 'ignore'] });
+
+    ff.stdout.on('data', chunk => chunks.push(chunk));
+
+    const timer = setTimeout(() => { ff.kill('SIGKILL'); resolve(null); }, timeoutMs);
+
+    ff.on('close', code => {
+      clearTimeout(timer);
+      resolve(code === 0 && chunks.length ? Buffer.concat(chunks) : null);
+    });
+
+    ff.on('error', () => { clearTimeout(timer); resolve(null); });
+  });
+}
+
+// Fetch a photo URL and resize it to card dimensions via Sharp.
 // Sharp uses libvips "shrink on load" — for a 4 K phone photo it never allocates
 // the full raw bitmap; JPEG is decoded at target resolution in DCT domain.
-// This is 5-10× faster than Canvas loading the full image then scaling.
-
-async function fetchAndResizePhoto(url, timeoutMs = 3000) {
+async function fetchAndResizePhoto(url, timeoutMs = 8000) {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   let rawBuf;
@@ -99,12 +137,19 @@ async function fetchAndResizePhoto(url, timeoutMs = 3000) {
     clearTimeout(timer);
   }
 
-  // Resize to exact card dimensions — Sharp handles cover-fit natively
   return sharp(rawBuf)
     .resize(IMG_W, IMG_H, { fit: 'cover', position: 'centre' })
     .png()
     .toBuffer()
     .catch(() => null);
+}
+
+// Route image URLs through Sharp, video URLs through ffmpeg frame extraction.
+async function fetchMedia(url, timeoutMs = 8000) {
+  if (!url) return null;
+  return isVideoUrl(url)
+    ? extractVideoFrame(url, timeoutMs)
+    : fetchAndResizePhoto(url, timeoutMs);
 }
 
 // ─── Canvas drawing helpers ───────────────────────────────────────────────────
@@ -220,10 +265,10 @@ async function render({ title, description, imageUrl, logoPath, label, labelColo
   const cached = cache.get(cacheKey);
   if (cached) return { buf: cached, cacheKey, hit: true };
 
-  // Sharp photo resize + logo load run in parallel
+  // Logo load + media fetch (photo or video frame) run in parallel
   const [logoImg, photoBuf] = await Promise.all([
     getLogo(logoPath),
-    imageUrl ? fetchAndResizePhoto(imageUrl) : Promise.resolve(null),
+    fetchMedia(imageUrl),
   ]);
 
   const canvas = createCanvas(W, H);

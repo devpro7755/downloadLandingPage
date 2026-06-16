@@ -1,7 +1,22 @@
 # Whistler OG Image — Backend Setup
 
 ## 1. Install
+```bash
 npm install canvas sharp
+```
+Also requires **ffmpeg** on the server (used to extract a frame from video posts):
+```bash
+# Ubuntu / Debian
+apt-get install -y ffmpeg
+
+# Amazon Linux 2 / AL2023
+yum install -y ffmpeg        # or: dnf install -y ffmpeg
+
+# macOS (dev)
+brew install ffmpeg
+```
+> `imageUrl` can be a `.jpg`, `.png`, `.webp`, or any of `.mp4 .mov .m4v .webm .avi .mkv` —
+> the generator detects the type automatically and picks the right path.
 
 ## 2. Files to copy into the server
 ```
